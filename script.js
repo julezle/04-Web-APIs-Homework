@@ -1,10 +1,12 @@
       // VARIABLES
       // ==========================================================================
-      
+
+      var score = 0;
+      var quoteIndex = 0;
 
       var trivia = 
       {
-        quote:["Inconceivable!","Houston, we have a problem.","Why are you dressed like somebody died?","You’re gonna get killed chasing after your damn ‘fortune and glory’!"
+        quote:["'Inconceivable!'","'Houston, we have a problem.'","'Why are you dressed like somebody died?'","'You’re gonna get killed chasing after your damn ‘fortune and glory’!'"
         ],
         movie:[
           ["Princess Bride", "The Count of Monte Cristo","The Three Musketeers"],
@@ -12,42 +14,49 @@
           ["Hocus Pocus","Beetle Juice","The Addams Family"],
           ["National Treasure","The Goonies","Indiana Jones"]
         ],
-        //***********Fix this answer array***********//
-        answer:[movie[0][0],movie[1][2],movie[2][3],movie[3][3]]
+        answer:["Princess Bride","Apollo 13","The Addams Family","Indiana Jones"]
       };
-      console.log(trivia);
-      //console.log(trivia.movie[0][0])
-      console.log(trivia.quote[0]);
-      //console.log(trivia.movie[0].length);
-
-       for(var i=0; i<trivia.movie[0].length;i++){
-        console.log(trivia.movie[0][i]);
-       }
-
-       console.log(trivia.answer[0]);
-
-      //if(userinput ==trivia.answer[0])
-
-
-      
 
       // The object questions for our quiz game.
 
 
-
-
-
-      // We start the game with a score of 0.
-      var score = 0;
-      // Variable to hold the index of current question.
-
-      // Array of questions.
-
-
       //================FUNCTIONS================//
 
-
-      // Function to render questions.
       function renderQuote() {
-
+        //emptying
+        document.querySelector("#movie").innerHTML="";
+        if (quoteIndex <= (trivia.quote.length - 1)) {
+          document.querySelector("#displayQuote").innerHTML = trivia.quote[quoteIndex];
+          for(var i=0; i<trivia.movie[quoteIndex].length;i++) {
+          //  console.log(trivia.movie[quoteIndex][i]);
+            var btn = document.createElement("button");
+            btn.setAttribute("class", "userchoice");
+            btn.setAttribute("value", trivia.movie[quoteIndex][i]);
+            btn.textContent= trivia.movie[quoteIndex][i];
+            document.querySelector("#movie").appendChild(btn);
+          }
+          // console.log(trivia.answer[quoteIndex]);
+          document.querySelector("#answer").innerHTML = trivia.answer[quoteIndex];
+        }
+        // If there aren't, render the end game screen.
+        else {
+          document.querySelector("#displayQuote").innerHTML = "Game Over!";
+          document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + trivia.quote.length;
+        }
       };
+
+      // quoteIndex++;
+      renderQuote();
+
+       // Function that updates the score...
+       function updateScore() {
+        document.querySelector("#score").innerHTML = "Score: " + score;
+      }
+
+          // Increment the questionIndex variable and call the renderQuestion function.
+          quoteIndex++;
+          // renderQuote();
+          updateScore();
+          
+
+    
