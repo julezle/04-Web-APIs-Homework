@@ -1,5 +1,4 @@
-// VARIABLES
-// ==========================================================================
+//================VARAIBLES================//
 
 var score = 0;
 var quoteIndex = 0;
@@ -18,18 +17,16 @@ var trivia =
   answer: ["Princess Bride", "Apollo 13", "The Addams Family", "Indiana Jones", "The Godfather"]
 };
 
-// The object questions for our quiz game.
-
-
 //================FUNCTIONS================//
 var btn;
 var btns;
 
+document.querySelector("#submit").style.visibility= "hidden";
+document.querySelector("#initials").style.visibility= "hidden";
+
 function startGame(){
 renderQuote();
-
 }
-
 
 function renderQuote() {
   document.querySelector("#startGame").style.visibility= "hidden";
@@ -39,79 +36,115 @@ function renderQuote() {
   if (quoteIndex <= (trivia.quote.length - 1)) {
     document.querySelector("#displayQuote").innerHTML = trivia.quote[quoteIndex];
     for (var i = 0; i < trivia.movie[quoteIndex].length; i++) {
-      //  console.log(trivia.movie[quoteIndex][i]);
       btn = document.createElement("button");
-      // var btn = document.querySelector("#buttons");
       btn.setAttribute("class", "userChoice");
       btn.setAttribute("value", trivia.movie[quoteIndex][i]);
       btn.textContent = trivia.movie[quoteIndex][i];
       document.querySelector("#movie").appendChild(btn);
       btn.onclick=checkAnswer;
     }
-    // console.log(trivia.answer[quoteIndex]);
     document.querySelector("#answer").innerHTML = trivia.answer[quoteIndex];
     document.querySelector("#answer").style.visibility= "hidden";
   }
-  // If there aren't, render the end game screen.
   else {
     document.querySelector("#displayQuote").innerHTML = "Game Over!";
+    document.querySelector("#submit").style.visibility= "visible";
+    document.querySelector("#initials").style.visibility= "visible";
     document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + trivia.quote.length;
   }
   btns = document.querySelectorAll(".userChoice");
 };
-
- //quoteIndex++;
-//renderQuote();
 
 // Function that updates the score...
 function updateScore() {
   document.querySelector("#score").innerHTML = "Score: " + score;
 }
 
-// document.addEventListener("onclick", function(userChoice){
-//   document.getElementsByName("movie").innerHTML = "";
-// });
-// var button = trivia.movie;
-
-// for (var any of btns) {
-//   any.addEventListener("click", checkAnswer);
-// console.log(btns);
-// };
-
 function checkAnswer() {
-  //alert(this.value);
   var userChoice = this.value;
-   console.log(  // console.log("user choice: " + userChoice)
-   );
-   console.log("index"+quoteIndex)
-   console.log("user choice: " + userChoice)
-   console.log("answer"+trivia.answer[quoteIndex])
+    if (userChoice === trivia.answer[quoteIndex]) {
+      alert("Correct!");
+      score++;
+      updateScore();
+      // var finalScore = updateScore.value;
+      // console.log(finalScore);
+      //ADD TIME???????
+    }
+    else {
+      alert("Wrong!");
+    }
 
-   console.log(userChoice === trivia.answer[quoteIndex])
-
-  // If they guess the correct answer, increase and update score, alert them they got it right.
-  if (userChoice === trivia.answer[quoteIndex]) {
-    alert("Correct!");
-    score++;
-    updateScore();
-    //ADD TIME???????
-  }
-  // If wrong, alert them they are wrong.
-  else {
-    alert("Wrong!");
-  }
-
-//go to the next index
   quoteIndex++;
-  //render out card
-
   renderQuote();
 };
 
+//==========================CODE BELOW IS NOT WORKING=========================//
+//====================================NOTES===================================//
 
 //Add input initials box & submit button
 //Final score screen
 //Text: You win!
 
+const testKey = document.querySelector("#initials");
+const testVal = score
+const btnInsert = document.querySelector("#submit");
+const output = document.querySelector("#scoreboard");
+//figure out how to store value of score
+
+var list = JSON.parse(localStorage.getItem("scoreList"));
+
+if (!Array.isArray(list)) {
+  list = [];
+}
+
+function scoreOnPage() {
+  document.querySelector("#scoreboard").innerHTML.empty();
+  var insideList = JSON.parse(localStorage.getItem("scoreList"));
+  
+    if (!Array.isArray(insideList)) {
+      insideList = [];
+    }
+
+  btnInsert.onclick = function() {
+    const player = initials.value;
+    const finalScore = score.value;
+      if (key && value) {
+        localStorage.setItem(key, value);
+        location.reload();
+      }
+  };
+  for (var i = 0; i < localStorage.length; i++) {
+    var x = x.text(insideList[i]);
+    // const key = localStorage.key(i);
+    // const value = localStorage.getItem(key);
+  
+    document.querySelector("#scoreboard").prepend();
+    localStorage.setItem("scoreList", JSON.stringify(scoreList));
+  }
+  scoreOnPage();
+};
+
+
 
 //Timer: increment & decrement
+
+//==================TIMER NOTES================================//
+
+
+//       var timeEl = document.querySelector(".time");
+// var mainEl = document.getElementById("main");
+
+// var secondsLeft = 10;
+
+// function setTime() {
+//   var timerInterval = setInterval(function() {
+//     secondsLeft--;
+//     timeEl.textContent = secondsLeft + " seconds left until GAME OVER.";
+
+//     if(secondsLeft === 0) {
+//       clearInterval(timerInterval);
+//       sendMessage();
+//     }
+
+//   }, 1000);
+// }

@@ -22,7 +22,7 @@
   <script type="text/javascript">
     var list = JSON.parse(localStorage.getItem("todolist"));
 
-    //console.log(localStorage.getItem("name"))
+    // console.log(localStorage.getItem("name"))
 
     // Checks to see if the todolist exists in localStorage and is an array currently
     // If not, set a local list variable to an empty array
@@ -109,49 +109,56 @@
 
 =================================
 
+var list = JSON.parse(localStorage.getItem("scoreList"));
+    // console.log(localStorage.getItem("name"))
 
-
-
-
-//==================TIMER NOTES================================
-
-
-//       var timeEl = document.querySelector(".time");
-// var mainEl = document.getElementById("main");
-
-// var secondsLeft = 10;
-
-// function setTime() {
-//   var timerInterval = setInterval(function() {
-//     secondsLeft--;
-//     timeEl.textContent = secondsLeft + " seconds left until GAME OVER.";
-
-//     if(secondsLeft === 0) {
-//       clearInterval(timerInterval);
-//       sendMessage();
-//     }
-
-//   }, 1000);
-// }
-
-var list = JSON.parse(localStorage.getItem("todolist"));
-
-
-if (!Array.isArray(list)) {
-  list = [];
-}
-
+  if (!Array.isArray(list)) {
+    list = [];
+  }
+  
 function putOnPage() 
-{
-$("#todo-list").empty(); // empties out the html
-
-  var insideList = JSON.parse(localStorage.getItem("todolist"));
-
-
+  {
+    document.querySelector("#scoreboard").innerHTML.empty();
+  
+var insideList = JSON.parse(localStorage.getItem("scoreList"));
+  
 
   if (!Array.isArray(insideList)) {
     insideList = [];
   }
+
+for (var i = 0; i < insideList.length; i++) {
+  var p = $("<p>").text(insideList[i]);
+  
+  p.prepend(b);
+
+  document.querySelector("#scoreboard").prepend(p);
+}
+}
+
+putOnPage();
+
+document.querySelector("#submit").on("click", function(event) {
+  event.preventDefault();
+  // Setting the input value to a variable and then clearing the input
+  var val = document.querySelector("initials").value;
+  document.querySelector("initials").value;
+  console.log(document.querySelector("initials"));
+
+  // Adding our new todo to our local list variable and adding it to local storage
+  // list.push(val);
+  // localStorage.setItem("todolist", JSON.stringify(list));
+  // console.log(" List Array: "+list)
+
+  putOnPage();
+});
+
+
+
+===================================
+
+
+
 
   for (var i = 0; i < insideList.length; i++) {
     var p = $("<p>").text(insideList[i]);
