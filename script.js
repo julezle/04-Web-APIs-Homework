@@ -20,6 +20,11 @@ var trivia =
 //================FUNCTIONS================//
 var btn;
 var btns;
+var userArray= JSON.parse(localStorage.getItem("scoreList"));
+
+if (!Array.isArray(userArray)) {
+  userArray = [];
+}
 
 document.querySelector("#submit").style.visibility= "hidden";
 document.querySelector("#initials").style.visibility= "hidden";
@@ -47,12 +52,76 @@ function renderQuote() {
     document.querySelector("#answer").style.visibility= "hidden";
   }
   else {
-    document.querySelector("#displayQuote").innerHTML = "Game Over!";
-    document.querySelector("#submit").style.visibility= "visible";
-    document.querySelector("#initials").style.visibility= "visible";
-    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + trivia.quote.length;
+    gameOver();
   }
   btns = document.querySelectorAll(".userChoice");
+};
+
+function gameOver(){
+  document.querySelector("#displayQuote").innerHTML = "Game Over!";
+  document.querySelector("#submit").style.visibility= "visible";
+  document.querySelector("#initials").style.visibility= "visible";
+  document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + trivia.quote.length;
+}
+
+function addUser(){
+  //1. gather data
+var name=document.querySelector("#initials").value;
+var userObj={
+  username:name,
+  userscore:score
+};
+//2.verify data
+// console.log(userObj);
+
+//3. push data into array
+userArray.push(userObj);
+
+//4. verify pushed data
+// console.log(userArray);
+
+//5. set data to local storage
+localStorage.setItem("scoreList", JSON.stringify(userArray));
+
+//6. go to local storage and verify update is correct
+
+//7. display all users
+scoreOnPage();
+}
+
+function scoreOnPage() {
+  //after user submit scores hide input area
+  document.querySelector("#submit").style.visibility= "hidden";
+  document.querySelector("#initials").style.visibility= "hidden";
+  document.querySelector("#scoreboard").innerHTML="";
+  var scoreList = JSON.parse(localStorage.getItem("scoreList"));
+  var highscoreindex=0;
+  
+    if (!Array.isArray(scoreList)) {
+      scoreList = [];
+    }
+
+  for (var i = 0; i < 5; i++) {
+    //if condional to find the highestscore index
+    //if the current score is higher than the highscore then update the highscoreindex
+    if(scoreList[i].userscore>scoreList[highscoreindex].userscore){
+      highscoreindex=i;
+    }
+    //check correct highscore
+    console.log("highscore: "+ scoreList[highscoreindex].username);
+    //dynamically add high score user to html
+    document.querySelector("#highscore").innerHTML="<b>HIGHSCORE NAME:</b> "+scoreList[highscoreindex].username+ "<b> | SCORE: </b>"+scoreList[highscoreindex].userscore;
+    //dynamically append each user
+    var p = document.createElement("p");
+    p.setAttribute("id","user");
+    //<p id="user"></p>
+    p.textContent=scoreList[i].username+ " "+scoreList[i].userscore;
+    //<p>vivian</p>
+    // const key = localStorage.key(i);
+    // const value = localStorage.getItem(key);
+  
+    document.querySelector("#scoreboard").appendChild(p);
+  }
 };
 
 // Function that updates the score...
@@ -77,53 +146,6 @@ function checkAnswer() {
   quoteIndex++;
   renderQuote();
 };
-
-//==========================CODE BELOW IS NOT WORKING=========================//
-//====================================NOTES===================================//
-
-//Add input initials box & submit button
-//Final score screen
-//Text: You win!
-
-const testKey = document.querySelector("#initials");
-const testVal = score
-const btnInsert = document.querySelector("#submit");
-const output = document.querySelector("#scoreboard");
-//figure out how to store value of score
-
-var list = JSON.parse(localStorage.getItem("scoreList"));
-
-if (!Array.isArray(list)) {
-  list = [];
-}
-
-function scoreOnPage() {
-  document.querySelector("#scoreboard").innerHTML.empty();
-  var insideList = JSON.parse(localStorage.getItem("scoreList"));
-  
-    if (!Array.isArray(insideList)) {
-      insideList = [];
-    }
-
-  btnInsert.onclick = function() {
-    const player = initials.value;
-    const finalScore = score.value;
-      if (key && value) {
-        localStorage.setItem(key, value);
-        location.reload();
-      }
-  };
-  for (var i = 0; i < localStorage.length; i++) {
-    var x = x.text(insideList[i]);
-    // const key = localStorage.key(i);
-    // const value = localStorage.getItem(key);
-  
-    document.querySelector("#scoreboard").prepend();
-    localStorage.setItem("scoreList", JSON.stringify(scoreList));
-  }
-  scoreOnPage();
-};
-
 
 
 //Timer: increment & decrement
